@@ -1,10 +1,11 @@
 import ShopComponent from '@/components/pages/ShopComponent';
+import { Box } from '@chakra-ui/react';
 
 const ShopPage = () => {
     return (
-        <div className='lg:mx-32 mx-5'>
+        <Box mx={100}>
             <ShopComponent />
-        </div>
+        </Box>
     );
 };
 
