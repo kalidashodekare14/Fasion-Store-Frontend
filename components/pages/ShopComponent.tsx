@@ -14,7 +14,7 @@ const ShopComponent = () => {
     return (
 
         <Box>
-            <Box display={'grid'} gridTemplateColumns="repeat(4, minmax(0, 1fr))" gap={3} >
+            <Box display={'grid'} lg={{ gridTemplateColumns:"repeat(4, minmax(0, 1fr))" }} gap={3} >
                 {
                     products?.data?.map(product => (
                         <Flex key={product._id} direction="column" justifyItems={"center"} alignItems={"center"} gap={3} padding={3} border="1px solid" borderColor="gray.300">
