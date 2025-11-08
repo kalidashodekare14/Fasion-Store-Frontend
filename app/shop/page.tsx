@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react';
 
 const ShopPage = () => {
     return (
-        <Box mx={100}>
+        <Box mx={"5%"}>
             <ShopComponent />
         </Box>
     );

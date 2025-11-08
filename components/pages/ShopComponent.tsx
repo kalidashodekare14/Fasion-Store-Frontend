@@ -1,12 +1,15 @@
 "use client"
 import { useGetAllProductsQuery } from "@/app/state/services/productServices";
 import { Box, Button, Flex, Grid, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
 
 const ShopComponent = () => {
 
     const { data: products, isLoading, error } = useGetAllProductsQuery()
-    console.log('checking data', products?.data[0].image[0])
+    console.log('products checking', products);
+
+
 
     return (
 
@@ -22,7 +25,9 @@ const ShopComponent = () => {
                                     <Box>{product?.category}</Box>
                                     <Box>${product?.price}</Box>
                                 </Flex>
-                                <Button w={"100%"}>Details</Button>
+                                <Link href={`/shop/${product._id}`}>
+                                    <Button w={"100%"}>Details</Button>
+                                </Link>
                             </Box>
                         </Flex>
                     ))
