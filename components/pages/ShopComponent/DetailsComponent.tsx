@@ -1,7 +1,7 @@
 "use client"
 import { useParams } from 'next/navigation';
-import { useGetDetailsProductQuery } from '@/app/state/services/productServices';
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { useGetDetailsProductQuery } from '@/state/services/productServices';
 
 const DetailsComponent = () => {
 

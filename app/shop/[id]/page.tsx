@@ -1,4 +1,4 @@
-import DetailsComponent from '@/components/pages/DetailsComponent';
+import DetailsComponent from '@/components/pages/ShopComponent/DetailsComponent';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
