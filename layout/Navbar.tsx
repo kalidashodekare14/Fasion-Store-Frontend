@@ -1,13 +1,17 @@
 "use client";
-import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
+import { Box, Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { FaCartArrowDown } from "react-icons/fa";
+import { useCart } from "react-use-cart";
 
 const Navbar = () => {
     const [isToggle, setIsToggle] = useState<boolean>(false);
-
     const handleToggle = () => setIsToggle((prev) => !prev);
+    const {
+        totalUniqueItems
+    } = useCart();
 
     const navigation = [
         { id: 1, name: "Home", path: "/" },
@@ -37,7 +41,7 @@ const Navbar = () => {
                     Fashion Design
                 </Box>
 
-               {/* Desktop */}
+                {/* Desktop */}
                 <Flex
                     display={{ base: "none", lg: "flex" }}
                     alignItems="center"
@@ -49,9 +53,26 @@ const Navbar = () => {
                             {navi.name}
                         </Link>
                     ))}
+                </Flex>
+                <Flex justifyContent="center" alignItems="center" gap={5}>
+                    <Link href={"/checkout"}>
+                        <Box cursor={"pointer"} position={"relative"}>
+                            <FaCartArrowDown size={25} />
+                            <Text
+                                display={"flex"}
+                                justifyContent={"center"}
+                                alignItems={"center"}
+                                position={"absolute"}
+                                top={"-10px"}
+                                right={"-15px"}
+                                bg={"#bbbb"}
+                                w={5}
+                                h={5}
+                                rounded={"full"}>{totalUniqueItems}</Text>
+                        </Box>
+                    </Link>
                     <Button colorScheme="teal">Login</Button>
                 </Flex>
-
                 {/* Mobile toggle button */}
                 <IconButton
                     aria-label="Toggle Menu"

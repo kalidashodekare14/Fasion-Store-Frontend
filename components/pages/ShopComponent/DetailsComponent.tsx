@@ -1,13 +1,33 @@
 "use client"
 import { useParams } from 'next/navigation';
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useGetDetailsProductQuery } from '@/state/services/productServices';
+import { useState } from 'react';
+import { useCart } from 'react-use-cart';
+
+
+interface Item {
+    id: string;
+    image: string[];
+    title: string;
+    category: string,
+    price: number;
+    quantity: number;
+}
 
 const DetailsComponent = () => {
 
+
+    const [isQuantity, setIsQuantity] = useState<number>(1);
+    const { addItem } = useCart();
+
+    console.log('checking number', isQuantity);
+
+    // params query
     const { id } = useParams()
+    // Singel Data Fetched
     const { data: detailsProduct, isLoading, error } = useGetDetailsProductQuery(id as string)
-    console.log('checking data', detailsProduct);
+
 
 
     return (
@@ -21,10 +41,24 @@ const DetailsComponent = () => {
                     <Text>{detailsProduct?.data?.description}</Text>
                     <Text>Category: {detailsProduct?.data?.category}</Text>
                     <Text>Price: ${detailsProduct?.data?.price}</Text>
-                    
+                    <Flex gap={2}>
+                        <Button onClick={() => setIsQuantity(prev => Math.max(prev - 1, 1))}>-</Button>
+                        <Input w={20} value={isQuantity} type='text' readOnly></Input>
+                        <Button onClick={() => setIsQuantity(prev => prev + 1)}>+</Button>
+                    </Flex>
+                    <Button onClick={() => {
+                        if (!detailsProduct?.data) return;
+                        addItem({
+                            id: detailsProduct.data._id,
+                            image: detailsProduct.data.image,
+                            title: detailsProduct.data.title,
+                            category: detailsProduct.data.category,
+                            price: detailsProduct.data.price,
+                        } as Item, isQuantity)
+                    }}>Add to Cart</Button>
                 </Box>
-            </Flex>
-        </Box>
+            </Flex >
+        </Box >
     );
 };
 

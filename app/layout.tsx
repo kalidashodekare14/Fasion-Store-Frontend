@@ -4,6 +4,8 @@ import "./globals.css";
 import { ReduxProviderWrapper } from "@/components/ReduxProviderWrapper";
 import { Provider } from "@/components/ui/provider";
 import Navbar from '@/layout/Navbar'
+import ClientCartProvider from "@/components/ClientCartProvider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +34,10 @@ export default function RootLayout({
       >
         <Provider>
           <ReduxProviderWrapper>
-            <Navbar />
-            {children}
+            <ClientCartProvider>
+              <Navbar />
+              {children}
+            </ClientCartProvider>
           </ReduxProviderWrapper>
         </Provider>
       </body>
