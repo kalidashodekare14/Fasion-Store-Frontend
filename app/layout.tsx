@@ -5,6 +5,7 @@ import { ReduxProviderWrapper } from "@/components/ReduxProviderWrapper";
 import { Provider } from "@/components/ui/provider";
 import Navbar from '@/layout/Navbar'
 import ClientCartProvider from "@/components/ClientCartProvider";
+import AuthProvider from "@/auth/AuthProvider";
 
 
 const geistSans = Geist({
@@ -35,8 +36,10 @@ export default function RootLayout({
         <Provider>
           <ReduxProviderWrapper>
             <ClientCartProvider>
-              <Navbar />
-              {children}
+              <AuthProvider>
+                <Navbar />
+                {children}
+              </AuthProvider>
             </ClientCartProvider>
           </ReduxProviderWrapper>
         </Provider>
