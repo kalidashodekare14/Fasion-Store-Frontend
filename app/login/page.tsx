@@ -48,11 +48,11 @@ const LoginPage = () => {
             }
             if (res?.ok === false || res?.status === 401) {
                 console.log("Sign In Error")
-                toast.error('Login Failed 🎉');
+                toast.error('Login Failed ❌');
             }
         } catch (error) {
             console.log(error);
-            toast.error('Login Failed 🎉');
+            toast.error('Login Failed ❌');
         } finally {
             setIsLoading(false);
         }

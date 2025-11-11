@@ -22,7 +22,6 @@ export const authOptions = {
                         email: email,
                         password: password
                     });
-                    console.log("checking user", res.data.data);
                     const data = res.data.data;
                     if (data && data.user) {
                         return {

@@ -1,14 +1,20 @@
 "use client";
-import { Box, Button, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Avatar, Box, Button, Menu, Flex, IconButton, Portal, Text, } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { FaCartArrowDown } from "react-icons/fa";
 import { useCart } from "react-use-cart";
+import { useSession } from "next-auth/react";
+
+
 
 const Navbar = () => {
+    const { data: session, status } = useSession()
+    console.log('checking session', session);
     const [isToggle, setIsToggle] = useState<boolean>(false);
     const handleToggle = () => setIsToggle((prev) => !prev);
+    const firstLetter = session?.user?.name?.[0] ?? "U";
     const {
         totalUniqueItems
     } = useCart();
@@ -71,7 +77,36 @@ const Navbar = () => {
                                 rounded={"full"}>{totalUniqueItems}</Text>
                         </Box>
                     </Link>
-                    <Button colorScheme="teal">Login</Button>
+                    {
+                        session ? (
+                            <Menu.Root>
+                                <Menu.Trigger asChild>
+                                    <Text fontSize={"20px"} w={10} h={10} display={"flex"} justifyContent={"center"} alignItems={"center"} rounded={"full"} border={"1px solid #bbbb"} cursor={"pointer"}>
+                                        {
+                                            firstLetter
+                                        }
+                                    </Text>
+                                </Menu.Trigger>
+                                <Portal>
+                                    <Menu.Positioner>
+                                        <Menu.Content>
+                                            <Menu.Item cursor={"pointer"} value="new-txt-a">
+                                               Profile
+                                            </Menu.Item>
+                                            <Menu.Item cursor={"pointer"} value="new-file-a">
+                                               Order Track
+                                            </Menu.Item>
+                                            
+                                        </Menu.Content>
+                                    </Menu.Positioner>
+                                </Portal>
+                            </Menu.Root>
+                        ) : (
+                            <Link href={`/login`}>
+                                <Button colorScheme="teal">Login</Button>
+                            </Link>
+                        )
+                    }
                 </Flex>
                 {/* Mobile toggle button */}
                 <IconButton
