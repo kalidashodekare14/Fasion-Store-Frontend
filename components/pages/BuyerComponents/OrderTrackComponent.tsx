@@ -1,5 +1,8 @@
 "use client"
-import { Box, Input, Table, Text } from "@chakra-ui/react";
+import { useGetOrderTrackQuery } from "@/state/services/productServices";
+import { IOrder } from "@/types/product";
+import { Box, Button, Input, Table, Text } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 
 const items = [
     { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
@@ -10,8 +13,11 @@ const items = [
 ]
 const OrderTrackComponent = () => {
 
+    const { data: session } = useSession();
+    const { data: OrdersData, isLoading, error } = useGetOrderTrackQuery(session?.user?.email);
+
     return (
-        <Box  height={"100vh"} spaceY={5}>
+        <Box height={"100vh"} spaceY={5}>
             <Box
                 display={{ base: "block", lg: "flex" }}
                 alignContent={{ lg: "space-between" }}
@@ -20,22 +26,36 @@ const OrderTrackComponent = () => {
                 px={2}
             >
                 <Text w={"full"} fontSize={18} my={5}>Order Track</Text>
-                <Input w={{lg: "30%"}} type="text" placeholder="Search..." />
+                <Input w={{ lg: "30%" }} type="text" placeholder="Search..." />
             </Box>
             <Table.Root size="sm">
                 <Table.Header>
                     <Table.Row>
-                        <Table.ColumnHeader fontWeight={"bold"}>Product</Table.ColumnHeader>
-                        <Table.ColumnHeader fontWeight={"bold"}>Category</Table.ColumnHeader>
-                        <Table.ColumnHeader fontWeight={"bold"} textAlign="end">Price</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"}>Name</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"}>Email</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"}>Phone</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"}>Items</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"} textAlign="end">Total Quantity</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"} textAlign="end">Total Price</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"} textAlign="end">Payment Method</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"} textAlign="end">Payment Status</Table.ColumnHeader>
+                        <Table.ColumnHeader fontWeight={"bold"} textAlign="end">Status</Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {items.map((item) => (
+                    {OrdersData?.data.map((item: IOrder) => (
                         <Table.Row key={item.id}>
-                            <Table.Cell>{item.name}</Table.Cell>
-                            <Table.Cell>{item.category}</Table.Cell>
-                            <Table.Cell textAlign="end">{item.price}</Table.Cell>
+                            <Table.Cell>{item.buyer_name}</Table.Cell>
+                            <Table.Cell>{item.buyer_email}</Table.Cell>
+                            <Table.Cell>{item.phone}</Table.Cell>
+                            <Table.Cell>
+                                <Button>{item?.items.length}</Button>
+                            </Table.Cell>
+                            <Table.Cell textAlign="end">{item.total_quantity}</Table.Cell>
+                            <Table.Cell textAlign="end">{item.total_price} TK</Table.Cell>
+                            <Table.Cell textAlign="end">{item.payment_method}</Table.Cell>
+                            <Table.Cell textAlign="end">{item.payment_status}</Table.Cell>
+                            <Table.Cell textAlign="end">{item.status}</Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>

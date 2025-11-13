@@ -1,4 +1,4 @@
-import { IProduct } from "@/types/product";
+import { IOrder, IProduct } from "@/types/product";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface GetProductParams {
@@ -25,13 +25,17 @@ export const productApi = createApi({
             }),
         }),
         getDetailsProduct: builder.query<{ success: boolean; message: string; data: IProduct }, string>({
-            query: (id) => `/products/${id}`
+            query: (id) => `/products/${id}`,
         }),
+        getOrderTrack: builder.query<{ success: boolean; message: string; data: IOrder }, string | null | undefined>({
+            query: (email) => `/order/${email}`,
+        })
     })
 })
 
 
 export const {
     useGetAllProductsQuery,
-    useGetDetailsProductQuery
+    useGetDetailsProductQuery,
+    useGetOrderTrackQuery
 } = productApi
