@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { FaCartArrowDown } from "react-icons/fa";
 import { useCart } from "react-use-cart";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 
 
@@ -90,13 +90,17 @@ const Navbar = () => {
                                 <Portal>
                                     <Menu.Positioner>
                                         <Menu.Content>
-                                            <Menu.Item cursor={"pointer"} value="new-txt-a">
-                                               Profile
+                                            <Menu.Item cursor={"pointer"} value="Profile">
+                                                Profile
                                             </Menu.Item>
-                                            <Menu.Item cursor={"pointer"} value="new-file-a">
-                                               Order Track
+                                            <Menu.Item cursor={"pointer"} value="Order Track">
+                                                <Link href={"/order_track"}>
+                                                    Order Track
+                                                </Link>
                                             </Menu.Item>
-                                            
+                                            <Menu.Item onClick={() => signOut()} cursor={"pointer"} value="Log Out">
+                                                Log Out
+                                            </Menu.Item>
                                         </Menu.Content>
                                     </Menu.Positioner>
                                 </Portal>

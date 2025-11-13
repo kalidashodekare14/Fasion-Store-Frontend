@@ -4,6 +4,7 @@ import { useCart } from "react-use-cart";
 import { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
+import { useSession } from "next-auth/react";
 
 const CheckoutComponent = () => {
     const {
@@ -13,7 +14,9 @@ const CheckoutComponent = () => {
         emptyCart
     } = useCart();
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const { data: session } = useSession();
+    console.log('chcking session', session);
 
     const handleOrderNow = async () => {
         if (isEmpty) return;
@@ -21,15 +24,16 @@ const CheckoutComponent = () => {
         setLoading(true);
 
         const orderData = {
-            buyer_email: "buyer4578@example.com",
-            seller_email: "seller1254@example.com",
+            buyer_name: session?.user?.name,
+            buyer_email: session?.user?.email,
             total_quantity: items.reduce((acc, item) => acc + (item.quantity ?? 0), 0),
             items: items.map(item => ({
                 product_id: item.id,
                 product_title: item.title,
                 product_category: item.category,
                 price: item.price,
-                quantity: item.quantity ?? 1
+                quantity: item.quantity ?? 1,
+                seller_email: item.seller_email
             })),
             total_price: items.reduce((acc, item) => acc + (item.price * (item.quantity ?? 0)), 0),
             payment_method: "Cash on Delivery",

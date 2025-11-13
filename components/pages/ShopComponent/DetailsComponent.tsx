@@ -13,6 +13,7 @@ interface Item {
     category: string,
     price: number;
     quantity: number;
+    seller_email: string
 }
 
 const DetailsComponent = () => {
@@ -27,7 +28,7 @@ const DetailsComponent = () => {
     const { id } = useParams()
     // Singel Data Fetched
     const { data: detailsProduct, isLoading, error } = useGetDetailsProductQuery(id as string)
-
+    console.log('checking data', detailsProduct)
 
 
     return (
@@ -54,6 +55,7 @@ const DetailsComponent = () => {
                             title: detailsProduct.data.title,
                             category: detailsProduct.data.category,
                             price: detailsProduct.data.price,
+                            seller_email: detailsProduct.data.seller_email
                         } as Item, isQuantity)
                     }}>Add to Cart</Button>
                 </Box>

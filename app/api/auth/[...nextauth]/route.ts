@@ -18,10 +18,14 @@ export const authOptions = {
 
                     if (!email || !password) return null;
 
-                    const res = await axios.post("http://localhost:5000/api/v1/auth/login", {
-                        email: email,
-                        password: password
-                    });
+                    const res = await axios.post(
+                        "http://localhost:5000/api/v1/auth/login",
+                        {
+                            email: email,
+                            password: password
+                        },
+                        { withCredentials: true }
+                    );
                     const data = res.data.data;
                     if (data && data.user) {
                         return {
@@ -46,6 +50,7 @@ export const authOptions = {
         async jwt({ token, user }: { token: any, user: any }) {
             if (user) {
                 token.accessToken = user.token;
+                
             }
             return token;
         },
