@@ -1,6 +1,6 @@
 "use client"
 import { Box, Button, Input, Menu, Portal, Table, Text, } from "@chakra-ui/react"
-import { useGetProductsQuery } from '@/state/services/sellerService';
+import { useGetProductsQuery, useProductDeleteMutation } from '@/state/services/sellerService';
 import { useSession } from 'next-auth/react';
 import { HiOutlineDotsVertical } from 'react-icons/hi';
 import Link from 'next/link';
@@ -9,11 +9,18 @@ import Link from 'next/link';
 
 const ProductManageComponent = () => {
 
+
+
     const { data: session } = useSession()
-    const { data: totalProduct, isLoading, error, } = useGetProductsQuery(session?.user?.email, {
+    const { data: totalProduct, isLoading, error, refetch } = useGetProductsQuery(session?.user?.email, {
         pollingInterval: 60000,
     });
-    console.log('checking total product', totalProduct);
+    const [deleteProduct, { isLoading: deleteLoading, isSuccess, error: errorLoading }] = useProductDeleteMutation();
+
+    const handleDeleteProduct = (id: string) => {
+        deleteProduct(id).unwrap();
+
+    }
 
 
     return (
@@ -65,6 +72,7 @@ const ProductManageComponent = () => {
                                                     value="delete"
                                                     color="fg.error"
                                                     _hover={{ bg: "bg.error", color: "fg.error" }}
+                                                    onClick={() => handleDeleteProduct(item._id)}
                                                 >
                                                     Delete...
                                                 </Menu.Item>
