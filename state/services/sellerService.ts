@@ -12,6 +12,14 @@ export const sellerService = createApi({
                 body: productData
             })
         }),
+        editProduct: builder.mutation({
+            query: ({ id, productData }) => ({
+                url: `/edit_product/${id}`,
+                method: "PATCH",
+                body: productData
+            })
+        })
+        ,
         getProducts: builder.query<{
             success: boolean;
             message: string;
@@ -21,12 +29,20 @@ export const sellerService = createApi({
                 url: `/total_product/${email}`,
                 method: "GET",
             })
-        })
+        }),
+        getOneProduct: builder.query({
+            query: (id) => ({
+                url: `/one_product/${id}`,
+                method: "GET",
+            })
+        }),
     })
 })
 
 
 export const {
     useAddProductMutation,
-    useGetProductsQuery
+    useEditProductMutation,
+    useGetProductsQuery,
+    useGetOneProductQuery
 } = sellerService

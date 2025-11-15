@@ -1,26 +1,19 @@
 "use client"
-import React, { useState } from 'react';
-import { Box, Button, CloseButton, Dialog, Field, Input, Portal, Table, Text, } from "@chakra-ui/react"
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button, Input, Menu, Portal, Table, Text, } from "@chakra-ui/react"
 import { useGetProductsQuery } from '@/state/services/sellerService';
 import { useSession } from 'next-auth/react';
-
-const items = [
-    { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
-    { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
-    { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
-    { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
-    { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
-]
+import { HiOutlineDotsVertical } from 'react-icons/hi';
+import Link from 'next/link';
 
 
 
 const ProductManageComponent = () => {
 
     const { data: session } = useSession()
-    const { data: totalProduct, isLoading, error } = useGetProductsQuery(session?.user?.email);
+    const { data: totalProduct, isLoading, error, } = useGetProductsQuery(session?.user?.email, {
+        pollingInterval: 60000,
+    });
     console.log('checking total product', totalProduct);
-
 
 
     return (
@@ -46,6 +39,7 @@ const ProductManageComponent = () => {
                         <Table.ColumnHeader>Product</Table.ColumnHeader>
                         <Table.ColumnHeader>Category</Table.ColumnHeader>
                         <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
+                        <Table.ColumnHeader textAlign="end">Action</Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -54,6 +48,31 @@ const ProductManageComponent = () => {
                             <Table.Cell>{item.title}</Table.Cell>
                             <Table.Cell>{item.category}</Table.Cell>
                             <Table.Cell textAlign="end">{item.price} TK</Table.Cell>
+                            <Table.Cell textAlign="end">
+                                <Menu.Root>
+                                    <Menu.Trigger asChild>
+                                        <Button variant="outline" size="sm">
+                                            <HiOutlineDotsVertical />
+                                        </Button>
+                                    </Menu.Trigger>
+                                    <Portal>
+                                        <Menu.Positioner>
+                                            <Menu.Content>
+                                                <Menu.Item value="rename">
+                                                    <Link style={{ border: "none" }} href={`/product_manage/${item._id}`}>Rename</Link>
+                                                </Menu.Item>
+                                                <Menu.Item
+                                                    value="delete"
+                                                    color="fg.error"
+                                                    _hover={{ bg: "bg.error", color: "fg.error" }}
+                                                >
+                                                    Delete...
+                                                </Menu.Item>
+                                            </Menu.Content>
+                                        </Menu.Positioner>
+                                    </Portal>
+                                </Menu.Root>
+                            </Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
