@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Box, Button, CloseButton, Dialog, Field, Input, Portal, Table, Text, } from "@chakra-ui/react"
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useGetProductsQuery } from '@/state/services/sellerService';
+import { useSession } from 'next-auth/react';
 
 const items = [
     { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
@@ -11,33 +13,14 @@ const items = [
     { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
 ]
 
-type Inputs = {
 
-    title: string,
-    description: string,
-    category: string,
-    price: number,
-    image: string[],
-    // seller_email: string,
-    status: string
-}
 
 const ProductManageComponent = () => {
 
-    const [isDialog, setIsDialog] = useState(false);
+    const { data: session } = useSession()
+    const { data: totalProduct, isLoading, error } = useGetProductsQuery(session?.user?.email);
+    console.log('checking total product', totalProduct);
 
-
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm<Inputs>()
-
-
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
-    }
 
 
     return (
@@ -50,9 +33,9 @@ const ProductManageComponent = () => {
                 px={2}
                 py={2}
             >
-               <Box w={"full"}>
-                <Text>Products</Text>
-               </Box>
+                <Box w={"full"}>
+                    <Text>Products</Text>
+                </Box>
                 <Input w={{ lg: "30%" }} type="text" placeholder="Search..." />
             </Box>
             {/* Modal Product Add */}
@@ -66,11 +49,11 @@ const ProductManageComponent = () => {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {items.map((item) => (
-                        <Table.Row key={item.id}>
-                            <Table.Cell>{item.name}</Table.Cell>
+                    {totalProduct?.data?.map((item) => (
+                        <Table.Row key={item._id}>
+                            <Table.Cell>{item.title}</Table.Cell>
                             <Table.Cell>{item.category}</Table.Cell>
-                            <Table.Cell textAlign="end">{item.price}</Table.Cell>
+                            <Table.Cell textAlign="end">{item.price} TK</Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>

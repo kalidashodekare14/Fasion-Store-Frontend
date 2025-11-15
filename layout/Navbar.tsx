@@ -98,6 +98,16 @@ const Navbar = () => {
                                                     Order Track
                                                 </Link>
                                             </Menu.Item>
+                                            <Menu.Item cursor={"pointer"} value="Product Post">
+                                                <Link href={"/add_product"}>
+                                                    Product Post
+                                                </Link>
+                                            </Menu.Item>
+                                            <Menu.Item cursor={"pointer"} value="Product Manage">
+                                                <Link href={"/product_manage"}>
+                                                    Product Manage
+                                                </Link>
+                                            </Menu.Item>
                                             <Menu.Item onClick={() => signOut()} cursor={"pointer"} value="Log Out">
                                                 Log Out
                                             </Menu.Item>

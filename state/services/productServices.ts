@@ -34,6 +34,7 @@ export const productApi = createApi({
 })
 
 
+
 export const {
     useGetAllProductsQuery,
     useGetDetailsProductQuery,
